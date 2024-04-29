@@ -96,7 +96,7 @@ app.get("/xss", (req, res) => {
 });
 
 // Serve the xss endpoint with fully patched CSP
-const csp_twitter_step4 = {
+const csp_full = {
     directives: {
         'script-src': [
             "'self'", 
@@ -108,7 +108,7 @@ const csp_twitter_step4 = {
 }
 
 // Serve the endpoint with CSP enabled
-app.get("/xss_patch", expressCspHeader(csp_twitter_step4), (req, res) => {
+app.get("/xss_patch", expressCspHeader(csp_full), (req, res) => {
     res.sendFile(`${PAGES}/xss.html`);
 });
 
