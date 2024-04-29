@@ -86,6 +86,31 @@ app.get("/nonces", expressCspHeader(csp_nonces), (req, res) => {
 });
 
 
+/**************************
+ * Demo: XSS
+ *************************/
+
+// Serve the xss endpoint without CSP
+app.get("/xss", (req, res) => {
+    res.sendFile(`${PAGES}/xss.html`);
+});
+
+// Serve the xss endpoint with fully patched CSP
+const csp_twitter_step4 = {
+    directives: {
+        'script-src': [
+            "'self'", 
+            "https://cdn.jsdelivr.net", 
+            "'sha256-sJLd4PYo4s+MAefGQBAz5MPUGAPfv94fjxJBqfrunUA='", 
+            "https://platform.twitter.com"
+        ]
+    }
+}
+
+// Serve the endpoint with CSP enabled
+app.get("/xss_patch", expressCspHeader(csp_twitter_step4), (req, res) => {
+    res.sendFile(`${PAGES}/xss.html`);
+});
 
 /**************************
  * Demo: Twitter - Step 0 *
